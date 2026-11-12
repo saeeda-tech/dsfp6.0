@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Verdant | Enterprise Careers & Talent Platform</title>
+  <link rel="stylesheet" href="/style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2310b981' stroke-width='2.2'><path d='M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5'/></svg>">
+</head>
+<body>
+
+  <!-- Top Sticky Header -->
+  <header class="site-header">
+    <div class="header-container">
+      <div class="brand-logo" id="logoBtn">
+        <div class="brand-symbol">
+          <svg class="svg-icon" viewBox="0 0 24 24" style="stroke-width: 2.2;">
+            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+          </svg>
+        </div>
+        <div class="brand-text">
+          <h1>Verdant</h1>
+          <span>Talent & Careers Network</span>
+        </div>
+      </div>
+
+      <nav class="header-nav">
+        <button class="nav-link active" id="navBrowseJobs">
+          <svg class="svg-icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+          Explore Jobs
+        </button>
+        <button class="nav-link" id="navMyApps">
+          <svg class="svg-icon" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+          My Applications
+          <span class="nav-badge" id="myAppsBadge" style="display: none;">0</span>
+        </button>
+        <button class="nav-link" id="navAdminPortal">
+          <svg class="svg-icon" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          Admin Portal
+        </button>
+      </nav>
+
+      <div class="header-actions">
+        <!-- Role Switcher -->
+        <div class="role-switcher" title="Switch view between Candidate and Admin">
+          <button class="role-btn active" id="roleCandidateBtn">Candidate</button>
+          <button class="role-btn" id="roleAdminBtn">Admin</button>
+        </div>
+
+        <button class="btn btn-accent btn-sm" id="headerPostJobBtn">
+          <svg class="svg-icon" viewBox="0 0 24 24" style="width: 0.95em; height: 0.95em;"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          Post a Position
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Candidate Hero Section -->
+  <section class="hero-section" id="heroSection">
+    <div class="hero-container">
+      <div class="hero-pill">
+        <span class="status-dot"></span>
+        <span id="heroActiveJobCount">10+</span> Active Verified Positions
+      </div>
+      <h2 class="hero-title">
+        High-Impact Opportunities for <br><span>Exceptional Builders</span>
+      </h2>
+      <p class="hero-subtitle">
+        Curated engineering, product, and leadership roles at world-class technology organizations.
+      </p>
+
+      <!-- Integrated Search Bar -->
+      <div class="hero-search-bar">
+        <div class="search-input-group">
+          <svg class="svg-icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+          <input type="text" id="heroSearchInput" placeholder="Title, skill, or company keyword...">
+        </div>
+        <div class="search-input-group">
+          <svg class="svg-icon" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          <input type="text" id="heroLocationInput" placeholder="Location or 'Remote'...">
+        </div>
+        <div class="search-input-group">
+          <svg class="svg-icon" viewBox="0 0 24 24"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
+          <select id="heroCategorySelect">
+            <option value="all">All Departments</option>
+            <option value="Engineering">Engineering</option>
+            <option value="Design">Design</option>
+            <option value="Marketing">Marketing</option>
+            <option value="Product">Product</option>
+            <option value="Sales">Sales</option>
+            <option value="Customer Support">Customer Support</option>
+          </select>
+        </div>
+        <button class="hero-search-btn" id="heroSearchSubmitBtn">
+          Search Roles
+        </button>
+      </div>
+
+      <!-- Category Filter Chips -->
+      <div class="quick-tags">
+        <span class="quick-tag-label">Popular:</span>
+        <button class="category-chip active" data-cat="all">All Roles</button>
+        <button class="category-chip" data-cat="Engineering">Engineering</button>
+        <button class="category-chip" data-cat="Design">Design</button>
+        <button class="category-chip" data-cat="Marketing">Marketing</button>
+        <button class="category-chip" data-cat="Product">Product</button>
+        <button class="category-chip" data-cat="Remote">Remote</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Admin Header Bar (Admin Mode) -->
+  <section class="admin-header-bar" id="adminHeaderBar" style="display: none;">
+    <div class="admin-header-container">
+      <div class="admin-title-area">
+        <h2>Recruitment Workspace</h2>
+        <p>Manage job listings, publish vacancies, adjust requirements, and evaluate candidates.</p>
+      </div>
+      <div class="admin-actions">
+        <button class="btn btn-outline" style="color: #ffffff; border-color: rgba(255,255,255,0.2);" id="btnResetData" title="Reset sample jobs and applications">
+          <svg class="svg-icon" viewBox="0 0 24 24"><path d="M3 2v6h6"/><path d="M21 12A9 9 0 0 0 6 5.3L3 8"/><path d="M21 22v-6h-6"/><path d="M3 12a9 9 0 0 0 15 6.7l3-2.7"/></svg>
+          Reset Demo Data
+        </button>
+        <button class="btn btn-accent" id="adminPostJobBtn">
+          <svg class="svg-icon" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          Publish Position
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Metrics Grid -->
+  <section class="stats-grid" id="statsSection">
+    <div class="stat-card">
+      <div class="stat-info">
+        <p>Active Positions</p>
+        <h3 id="statActiveJobs">0</h3>
+      </div>
+      <div class="stat-icon">
+        <svg class="svg-icon" viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-info">
+        <p>Total Listings</p>
+        <h3 id="statTotalJobs">0</h3>
+      </div>
+      <div class="stat-icon">
+        <svg class="svg-icon" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-info">
+        <p>Applicants Received</p>
+        <h3 id="statTotalApps">0</h3>
+      </div>
+      <div class="stat-icon">
+        <svg class="svg-icon" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-info">
+        <p>Shortlisted</p>
+        <h3 id="statShortlistedApps">0</h3>
+      </div>
+      <div class="stat-icon">
+        <svg class="svg-icon" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+      </div>
+    </div>
+  </section>
+
+  <!-- Main Container -->
+  <main class="main-container">
+
+    <!-- VIEW 1: Candidate Job Board -->
+    <div id="candidateJobBoardView" class="job-board-layout">
+      <!-- Left Sidebar Filters -->
+      <aside class="filter-sidebar">
+        <div class="sidebar-header">
+          <h3>Filters</h3>
+          <button class="filter-reset-btn" id="filterResetBtn">Clear All</button>
+        </div>
+
+        <!-- Category Filter -->
+        <div class="filter-group">
+          <label class="group-label">Department</label>
+          <div class="filter-options" id="categoryFilterContainer">
+            <label class="custom-checkbox">
+              <input type="radio" name="filterCategory" value="all" checked> All Departments
+            </label>
+            <label class="custom-checkbox">
+              <input type="radio" name="filterCategory" value="Engineering"> Engineering
+            </label>
+            <label class="custom-checkbox">
+              <input type="radio" name="filterCategory" value="Design"> Design
+            </label>
+            <label class="custom-checkbox">
+              <input type="radio" name="filterCategory" value="Marketing"> Marketing
+            </label>
+            <label class="custom-checkbox">
+              <input type="radio" name="filterCategory" value="Product"> Product
+            </label>
+            <label class="custom-checkbox">
+              <input type="radio" name="filterCategory" value="Customer Support"> Customer Support
+            </label>
+          </div>
+        </div>
+
+        <!-- Job Type Filter -->
+        <div class="filter-group">
+          <label class="group-label">Workplace & Type</label>
+          <div class="filter-options">
+            <label class="custom-checkbox">
+              <input type="checkbox" name="filterJobType" value="Full-time"> Full-time
+            </label>
+            <label class="custom-checkbox">
+              <input type="checkbox" name="filterJobType" value="Part-time"> Part-time
+            </label>
+            <label class="custom-checkbox">
+              <input type="checkbox" name="filterJobType" value="Remote"> Remote
+            </label>
+            <label class="custom-checkbox">
+              <input type="checkbox" name="filterJobType" value="Hybrid"> Hybrid
+            </label>
+          </div>
+        </div>
+
+        <!-- Experience Level Filter -->
+        <div class="filter-group">
+          <label class="group-label">Seniority</label>
+          <div class="filter-options">
+            <label class="custom-checkbox">
+              <input type="checkbox" name="filterExp" value="Entry-level"> Entry-level
+            </label>
+            <label class="custom-checkbox">
+              <input type="checkbox" name="filterExp" value="Mid-level"> Mid-level
+            </label>
+            <label class="custom-checkbox">
+              <input type="checkbox" name="filterExp" value="Senior"> Senior
+            </label>
+            <label class="custom-checkbox">
+              <input type="checkbox" name="filterExp" value="Lead / Manager"> Lead / Manager
+            </label>
+          </div>
+        </div>
+
+        <!-- Direct Candidate Help -->
+        <div style="background-color: var(--primary-50); padding: 0.95rem; border-radius: var(--radius-md); border: 1px solid var(--primary-100); margin-top: 1.5rem;">
+          <p style="font-size: 0.78rem; color: var(--primary-900); font-weight: 600;">Resume Upload</p>
+          <p style="font-size: 0.74rem; color: var(--neutral-600); margin-top: 0.2rem; line-height: 1.45;">
+            Candidates can submit verified resumes (PDF, DOCX) directly to the hiring team.
+          </p>
+        </div>
+      </aside>
+
+      <!-- Main Feed -->
+      <section class="jobs-feed">
+        <div class="feed-header">
+          <h2>Open Positions <span id="jobResultsCount">(0)</span></h2>
+          <div class="feed-controls">
+            <label for="sortSelector">Sort:</label>
+            <select id="sortSelector">
+              <option value="newest">Newest First</option>
+              <option value="salary">Highest Salary</option>
+              <option value="company">Company (A-Z)</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Jobs List Container -->
+        <div class="jobs-list" id="jobsListContainer">
+          <!-- Dynamically populated -->
+        </div>
+
+        <!-- Empty State Container -->
+        <div id="noJobsFound" class="empty-state" style="display: none;">
+          <div class="empty-icon">
+            <svg class="svg-icon" style="width: 100%; height: 100%;" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+          </div>
+          <h3>No matching positions found</h3>
+          <p>Try broadening your search query or resetting filters.</p>
+          <button class="btn btn-outline-green btn-sm" id="btnResetFiltersEmpty">Reset Filters</button>
+        </div>
+      </section>
+    </div>
+
+    <!-- VIEW 2: Candidate My Applications View -->
+    <div id="myApplicationsView" style="display: none;">
+      <div style="margin-bottom: 1.25rem;">
+        <h2 style="font-size: 1.35rem; font-weight: 700; color: var(--neutral-900);">Submitted Applications</h2>
+        <p style="color: var(--neutral-500); font-size: 0.85rem;">Track the status of your submissions with participating organizations.</p>
+      </div>
+
+      <div class="table-responsive">
+        <table class="custom-table">
+          <thead>
+            <tr>
+              <th>Role & Organization</th>
+              <th>Applicant</th>
+              <th>Date Submitted</th>
+              <th>Status</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody id="myAppsTableBody">
+            <!-- Dynamically populated -->
+          </tbody>
+        </table>
+      </div>
+
+      <div id="noMyApps" class="empty-state" style="display: none; margin-top: 1rem;">
+        <div class="empty-icon">
+          <svg class="svg-icon" style="width: 100%; height: 100%;" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+        </div>
+        <h3>No applications on record</h3>
+        <p>Explore open positions to submit an application.</p>
+        <button class="btn btn-primary btn-sm" id="btnBrowseJobsFromEmpty">Explore Roles</button>
+      </div>
+    </div>
+
+    <!-- VIEW 3: Admin Portal Panel -->
+    <div id="adminPortalView" style="display: none;">
+      <div class="admin-view-panel">
+        <!-- Admin Subtabs -->
+        <div class="admin-tabs">
+          <button class="admin-tab-btn active" id="tabAdminJobs">
+            <svg class="svg-icon" viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+            Job Postings (<span id="adminJobTabCount">0</span>)
+          </button>
+          <button class="admin-tab-btn" id="tabAdminApps">
+            <svg class="svg-icon" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            Candidates & Applications (<span id="adminAppTabCount">0</span>)
+          </button>
+        </div>
+
+        <div class="admin-panel-content">
+          <!-- TAB 1: Manage Job Postings -->
+          <div id="adminJobsPanel">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; flex-wrap: wrap; gap: 0.75rem;">
+              <div>
+                <h3 style="font-size: 1.05rem; font-weight: 700; color: var(--neutral-900);">Active Listings</h3>
+                <p style="font-size: 0.8rem; color: var(--neutral-500);">Modify live parameters, pause incoming applications, or publish new roles.</p>
+              </div>
+              <div style="display: flex; gap: 0.5rem;">
+                <input type="text" id="adminJobSearchInput" placeholder="Filter positions..." class="form-control" style="width: 200px; font-size: 0.8rem; padding: 0.35rem 0.65rem;">
+                <button class="btn btn-primary btn-sm" id="btnAdminCreateJob">
+                  <svg class="svg-icon" viewBox="0 0 24 24" style="width: 0.9em; height: 0.9em;"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                  New Position
+                </button>
+              </div>
+            </div>
+
+            <div class="table-responsive">
+              <table class="custom-table">
+                <thead>
+                  <tr>
+                    <th>Role & Organization</th>
+                    <th>Department</th>
+                    <th>Location / Model</th>
+                    <th>Compensation</th>
+                    <th>Pipeline</th>
+                    <th>Status</th>
+                    <th>Controls</th>
+                  </tr>
+                </thead>
+                <tbody id="adminJobsTableBody">
+                  <!-- Dynamically populated -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- TAB 2: Manage Applications Pipeline -->
+          <div id="adminAppsPanel" style="display: none;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; flex-wrap: wrap; gap: 0.75rem;">
+              <div>
+                <h3 style="font-size: 1.05rem; font-weight: 700; color: var(--neutral-900);">Candidate Pipeline</h3>
+                <p style="font-size: 0.8rem; color: var(--neutral-500);">Evaluate submissions, review resumes, and assign recruitment statuses.</p>
+              </div>
+              <div style="display: flex; gap: 0.5rem; align-items: center;">
+                <select id="adminAppStatusFilter" class="form-control" style="font-size: 0.8rem; padding: 0.35rem 0.65rem;">
+                  <option value="all">All Statuses</option>
+                  <option value="pending">Pending</option>
+                  <option value="reviewed">Reviewed</option>
+                  <option value="shortlisted">Shortlisted</option>
+                  <option value="rejected">Rejected</option>
+                  <option value="hired">Hired</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="table-responsive">
+              <table class="custom-table">
+                <thead>
+                  <tr>
+                    <th>Candidate</th>
+                    <th>Position</th>
+                    <th>Experience</th>
+                    <th>Date</th>
+                    <th>Resume</th>
+                    <th>Evaluation Status</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody id="adminAppsTableBody">
+                  <!-- Dynamically populated -->
+                </tbody>
+              </table>
+            </div>
+
+            <div id="noAdminApps" class="empty-state" style="display: none; margin-top: 1rem;">
+              <div class="empty-icon">
+                <svg class="svg-icon" style="width: 100%; height: 100%;" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+              </div>
+              <h3>No candidate applications</h3>
+              <p>Submitted candidate applications will appear in this pipeline.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- ========================================================================= -->
+  <!-- MODAL 1: Job Details Modal -->
+  <!-- ========================================================================= -->
+  <div class="modal-backdrop" id="jobDetailModal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <div>
+          <h3 id="modalJobTitle">Role Specifications</h3>
+          <p id="modalJobCompany" style="font-size: 0.8rem; color: #a7f3d0; margin-top: 0.15rem;"></p>
+        </div>
+        <button class="modal-close-btn" data-close-modal="jobDetailModal" aria-label="Close modal">
+          <svg class="svg-icon" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+      <div class="modal-body">
+        <!-- Highlights Bar -->
+        <div style="display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1.25rem; padding-bottom: 1rem; border-bottom: 1px solid var(--neutral-200);">
+          <span class="badge badge-dark-green" id="modalJobLocation">Remote</span>
+          <span class="badge badge-gray" id="modalJobType">Full-time</span>
+          <span class="badge badge-gray" id="modalJobCategory">Engineering</span>
+          <span class="badge badge-gray" id="modalJobExp">Senior</span>
+          <span class="badge badge-salary" id="modalJobSalary">$130,000 - $160,000</span>
+          <span class="badge badge-status-active" id="modalJobStatus">Active</span>
+        </div>
+
+        <!-- Description -->
+        <div style="margin-bottom: 1.25rem;">
+          <h4 style="font-size: 0.88rem; font-weight: 700; color: var(--neutral-900); margin-bottom: 0.4rem;">Role Overview</h4>
+          <div id="modalJobDescription" style="font-size: 0.86rem; color: var(--neutral-700); line-height: 1.6; white-space: pre-line;"></div>
+        </div>
+
+        <!-- Requirements -->
+        <div style="margin-bottom: 1.25rem;">
+          <h4 style="font-size: 0.88rem; font-weight: 700; color: var(--neutral-900); margin-bottom: 0.4rem;">Key Qualifications</h4>
+          <div id="modalJobRequirements" style="font-size: 0.86rem; color: var(--neutral-700); line-height: 1.6; white-space: pre-line;"></div>
+        </div>
+
+        <!-- Benefits -->
+        <div style="margin-bottom: 1.25rem;">
+          <h4 style="font-size: 0.88rem; font-weight: 700; color: var(--neutral-900); margin-bottom: 0.4rem;">Compensation & Benefits</h4>
+          <div id="modalJobBenefits" style="font-size: 0.86rem; color: var(--neutral-700); line-height: 1.6; white-space: pre-line;"></div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-outline btn-sm" data-close-modal="jobDetailModal">Close</button>
+        <button class="btn btn-primary btn-sm" id="modalApplyBtn">
+          Apply for Position
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================================= -->
+  <!-- MODAL 2: Candidate Application Modal -->
+  <!-- ========================================================================= -->
+  <div class="modal-backdrop" id="applyModal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <div>
+          <h3>Candidate Application</h3>
+          <p id="applyModalSubtitle" style="font-size: 0.8rem; color: #a7f3d0; margin-top: 0.15rem;">Application Form</p>
+        </div>
+        <button class="modal-close-btn" data-close-modal="applyModal" aria-label="Close modal">
+          <svg class="svg-icon" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form id="applicationForm">
+          <input type="hidden" id="applyJobId">
+          <div class="form-grid">
+            <div class="form-group">
+              <label for="applicantName">Full Name <span class="required">*</span></label>
+              <input type="text" id="applicantName" class="form-control" placeholder="Jane Doe" required>
+            </div>
+            <div class="form-group">
+              <label for="applicantEmail">Email Address <span class="required">*</span></label>
+              <input type="email" id="applicantEmail" class="form-control" placeholder="jane@example.com" required>
+            </div>
+            <div class="form-group">
+              <label for="applicantPhone">Phone Number</label>
+              <input type="tel" id="applicantPhone" class="form-control" placeholder="+1 (555) 000-0000">
+            </div>
+            <div class="form-group">
+              <label for="applicantExp">Years of Professional Experience</label>
+              <input type="number" id="applicantExp" class="form-control" min="0" max="40" value="4">
+            </div>
+            <div class="form-group full-width">
+              <label for="applicantPortfolio">Portfolio / GitHub / Profile URL</label>
+              <input type="url" id="applicantPortfolio" class="form-control" placeholder="https://github.com/username">
+            </div>
+            <div class="form-group full-width">
+              <label for="applicantCoverLetter">Cover Letter & Context</label>
+              <textarea id="applicantCoverLetter" class="form-control" placeholder="Introduce yourself and detail your relevant domain achievements..."></textarea>
+            </div>
+            
+            <!-- Resume Upload Field -->
+            <div class="form-group full-width">
+              <label>Curriculum Vitae / Resume (PDF, DOCX, TXT)</label>
+              <div class="file-upload-box" id="resumeUploadBox">
+                <input type="file" id="resumeFileInput" accept=".pdf,.doc,.docx,.txt">
+                <div class="file-upload-icon">
+                  <svg class="svg-icon" style="width: 100%; height: 100%;" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><line x1="9" y1="15" x2="12" y2="12"/><line x1="15" y1="15" x2="12" y2="12"/></svg>
+                </div>
+                <div class="file-upload-info">
+                  <p>Upload Resume Document</p>
+                  <span>Select or drag & drop (PDF, DOCX, up to 5MB)</span>
+                </div>
+                <div id="resumeFilePreview" class="uploaded-file-tag" style="display: none;">
+                  <span id="resumeFileName">resume.pdf</span>
+                  <span id="removeResumeBtn" style="color: #ef4444; cursor: pointer; margin-left: 0.5rem; font-size: 1.1rem; line-height: 1;" title="Remove file">&times;</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-outline btn-sm" data-close-modal="applyModal">Cancel</button>
+        <button class="btn btn-primary btn-sm" id="btnSubmitApplication">
+          Submit Application
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================================= -->
+  <!-- MODAL 3: Admin Post / Update Job Modal -->
+  <!-- ========================================================================= -->
+  <div class="modal-backdrop" id="jobFormModal">
+    <div class="modal-card" style="max-width: 760px;">
+      <div class="modal-header">
+        <div>
+          <h3 id="jobFormModalTitle">Publish Position</h3>
+          <p style="font-size: 0.8rem; color: #a7f3d0; margin-top: 0.15rem;">Enter listing details and requirements.</p>
+        </div>
+        <button class="modal-close-btn" data-close-modal="jobFormModal" aria-label="Close modal">
+          <svg class="svg-icon" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form id="jobCreateOrEditForm">
+          <input type="hidden" id="editJobId">
+          <div class="form-grid">
+            <div class="form-group">
+              <label for="jobFormTitle">Job Title <span class="required">*</span></label>
+              <input type="text" id="jobFormTitle" class="form-control" placeholder="e.g. Senior Backend Engineer" required>
+            </div>
+            <div class="form-group">
+              <label for="jobFormCompany">Company / Organization <span class="required">*</span></label>
+              <input type="text" id="jobFormCompany" class="form-control" placeholder="e.g. Horizon Labs" required>
+            </div>
+            <div class="form-group">
+              <label for="jobFormLocation">Location / Workplace Model <span class="required">*</span></label>
+              <input type="text" id="jobFormLocation" class="form-control" placeholder="Remote (US / Europe)" required>
+            </div>
+            <div class="form-group">
+              <label for="jobFormCategory">Department <span class="required">*</span></label>
+              <select id="jobFormCategory" class="form-control" required>
+                <option value="Engineering">Engineering</option>
+                <option value="Design">Design</option>
+                <option value="Marketing">Marketing</option>
+                <option value="Product">Product</option>
+                <option value="Sales">Sales</option>
+                <option value="Customer Support">Customer Support</option>
+                <option value="Operations">Operations</option>
+                <option value="Finance">Finance</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="jobFormType">Employment Type <span class="required">*</span></label>
+              <select id="jobFormType" class="form-control" required>
+                <option value="Full-time">Full-time</option>
+                <option value="Part-time">Part-time</option>
+                <option value="Remote">Remote</option>
+                <option value="Hybrid">Hybrid</option>
+                <option value="Contract">Contract</option>
+                <option value="Internship">Internship</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="jobFormExperience">Seniority <span class="required">*</span></label>
+              <select id="jobFormExperience" class="form-control" required>
+                <option value="Entry-level">Entry-level</option>
+                <option value="Mid-level">Mid-level</option>
+                <option value="Senior">Senior</option>
+                <option value="Lead / Manager">Lead / Manager</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="jobFormSalaryMin">Minimum Salary (USD)</label>
+              <input type="number" id="jobFormSalaryMin" class="form-control" placeholder="110000" step="5000">
+            </div>
+            <div class="form-group">
+              <label for="jobFormSalaryMax">Maximum Salary (USD)</label>
+              <input type="number" id="jobFormSalaryMax" class="form-control" placeholder="150000" step="5000">
+            </div>
+            <div class="form-group full-width">
+              <label for="jobFormStatus">Publication Status</label>
+              <select id="jobFormStatus" class="form-control">
+                <option value="active">Active (Visible to applicants)</option>
+                <option value="closed">Closed (Applications paused)</option>
+                <option value="draft">Draft (Private)</option>
+              </select>
+            </div>
+            <div class="form-group full-width">
+              <label for="jobFormDescription">Role Description <span class="required">*</span></label>
+              <textarea id="jobFormDescription" class="form-control" style="min-height: 110px;" placeholder="Provide architecture context, key mandates, and team structure..." required></textarea>
+            </div>
+            <div class="form-group full-width">
+              <label for="jobFormRequirements">Key Qualifications & Skills <span class="required">*</span></label>
+              <textarea id="jobFormRequirements" class="form-control" style="min-height: 90px;" placeholder="• 5+ years building distributed backend services&#10;• Experience with Node.js, Go, or Python&#10;• Strong relational database modeling..." required></textarea>
+            </div>
+            <div class="form-group full-width">
+              <label for="jobFormBenefits">Perks & Compensation Details</label>
+              <textarea id="jobFormBenefits" class="form-control" style="min-height: 75px;" placeholder="• Health, dental, vision coverage&#10;• Equity allocation&#10;• Remote workspace allowance"></textarea>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-outline btn-sm" data-close-modal="jobFormModal">Cancel</button>
+        <button class="btn btn-primary btn-sm" id="btnSaveJobForm">
+          Save Position
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================================= -->
+  <!-- MODAL 4: Admin View Application Detail Modal -->
+  <!-- ========================================================================= -->
+  <div class="modal-backdrop" id="appDetailModal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <div>
+          <h3 id="appDetailApplicantName">Candidate Dossier</h3>
+          <p id="appDetailJobTitle" style="font-size: 0.8rem; color: #a7f3d0; margin-top: 0.15rem;"></p>
+        </div>
+        <button class="modal-close-btn" data-close-modal="appDetailModal" aria-label="Close modal">
+          <svg class="svg-icon" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.85rem; margin-bottom: 1.15rem; background: var(--neutral-50); padding: 0.85rem 1rem; border-radius: var(--radius-md); border: 1px solid var(--neutral-200);">
+          <div>
+            <span style="font-size: 0.72rem; color: var(--neutral-500); font-weight: 600; text-transform: uppercase;">Email</span>
+            <p id="appDetailEmail" style="font-weight: 600; font-size: 0.84rem; color: var(--neutral-900);"></p>
+          </div>
+          <div>
+            <span style="font-size: 0.72rem; color: var(--neutral-500); font-weight: 600; text-transform: uppercase;">Phone</span>
+            <p id="appDetailPhone" style="font-weight: 600; font-size: 0.84rem; color: var(--neutral-900);"></p>
+          </div>
+          <div>
+            <span style="font-size: 0.72rem; color: var(--neutral-500); font-weight: 600; text-transform: uppercase;">Experience</span>
+            <p id="appDetailExp" style="font-weight: 600; font-size: 0.84rem; color: var(--neutral-900);"></p>
+          </div>
+          <div>
+            <span style="font-size: 0.72rem; color: var(--neutral-500); font-weight: 600; text-transform: uppercase;">Portfolio / Profile</span>
+            <p id="appDetailPortfolio" style="font-weight: 600; font-size: 0.84rem;"></p>
+          </div>
+        </div>
+
+        <div style="margin-bottom: 1.15rem;">
+          <h4 style="font-size: 0.85rem; font-weight: 700; color: var(--neutral-900); margin-bottom: 0.35rem;">Cover Note</h4>
+          <div id="appDetailCoverLetter" style="background: var(--white); border: 1px solid var(--neutral-200); padding: 0.85rem; border-radius: var(--radius-md); font-size: 0.84rem; color: var(--neutral-700); line-height: 1.55; white-space: pre-line;"></div>
+        </div>
+
+        <div style="margin-bottom: 1.15rem;">
+          <h4 style="font-size: 0.85rem; font-weight: 700; color: var(--neutral-900); margin-bottom: 0.35rem;">Attached CV</h4>
+          <div style="display: flex; align-items: center; justify-content: space-between; background: var(--primary-50); border: 1px solid var(--primary-200); padding: 0.65rem 0.95rem; border-radius: var(--radius-md);">
+            <div style="display: flex; align-items: center; gap: 0.45rem;">
+              <svg class="svg-icon" style="color: var(--primary-700);" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+              <span id="appDetailResumeName" style="font-weight: 600; font-size: 0.82rem; color: var(--primary-900);">Resume.pdf</span>
+            </div>
+            <a id="appDetailResumeDownloadBtn" class="btn btn-primary btn-sm" href="#" download>
+              <svg class="svg-icon" viewBox="0 0 24 24" style="width: 0.9em; height: 0.9em;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+              Download
+            </a>
+          </div>
+        </div>
+
+        <div>
+          <h4 style="font-size: 0.85rem; font-weight: 700; color: var(--neutral-900); margin-bottom: 0.35rem;">Recruitment Status</h4>
+          <div style="display: flex; gap: 0.75rem; align-items: center;">
+            <select id="appDetailStatusSelect" class="form-control" style="width: 180px; font-size: 0.82rem;">
+              <option value="pending">Pending</option>
+              <option value="reviewed">Reviewed</option>
+              <option value="shortlisted">Shortlisted</option>
+              <option value="rejected">Rejected</option>
+              <option value="hired">Hired</option>
+            </select>
+            <button class="btn btn-outline-green btn-sm" id="btnUpdateAppDetailStatus">
+              Update Status
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-outline btn-sm" data-close-modal="appDetailModal">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Container -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <!-- Site Footer -->
+  <footer class="site-footer">
+    <div class="footer-container">
+      <div style="display: flex; align-items: center; gap: 0.6rem;">
+        <span style="font-weight: 700; color: #f8fafc; letter-spacing: -0.01em;">Verdant Careers Platform</span>
+        <span>&bull;</span>
+        <span>Engineered with Node.js & SQLite Architecture</span>
+      </div>
+      <div>
+        Dark Green Precision Design System &bull; Production Prototype
+      </div>
+    </div>
+  </footer>
+
+  <!-- Application Logic -->
+  <script src="/app.js"></script>
+</body>
+</html>
