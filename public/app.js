@@ -182,9 +182,337 @@
   let activeAppDetailId = null;
 
   // =========================================================================
-  // API Fetch Utility
+  // Client-Side Mock Fallback (For GitHub Pages & Static Deployments)
+  // =========================================================================
+  const isStaticHost = window.location.hostname.includes('github.io') || window.location.protocol === 'file:';
+
+  const defaultSampleJobs = [
+    {
+      id: 'job-1',
+      title: 'Senior Full-Stack Engineer',
+      company: 'Verdant Technologies',
+      location: 'Remote (US / Europe)',
+      job_type: 'Full-time',
+      category: 'Engineering',
+      experience: 'Senior',
+      salary_min: 135000,
+      salary_max: 175000,
+      salary_currency: '$',
+      description: 'We are seeking an experienced Senior Full-Stack Engineer to lead the architecture and scaling of our enterprise cloud services. You will collaborate closely with product management and design teams to build high-performance web applications, resilient backend microservices, and elegant developer APIs.',
+      requirements: '• 5+ years of experience with modern TypeScript/JavaScript, Node.js, and React.\n• Strong database design skills (PostgreSQL, SQLite, Redis).\n• Experience designing and deploying scalable REST and GraphQL APIs.\n• Proven track record with cloud infrastructure (AWS/GCP, Docker, CI/CD pipelines).\n• Passion for writing clean, tested, and maintainable code.',
+      benefits: '• Competitive salary + meaningful equity package\n• 100% remote work flexibility\n• Comprehensive health, dental, and vision coverage\n• $3,000 annual learning and home office stipend\n• Unlimited Paid Time Off (PTO)',
+      status: 'active',
+      created_at: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString(),
+      updated_at: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString()
+    },
+    {
+      id: 'job-2',
+      title: 'Lead Product Designer (UI/UX)',
+      company: 'Evergreen Design Studio',
+      location: 'New York, NY (Hybrid)',
+      job_type: 'Full-time',
+      category: 'Design',
+      experience: 'Lead / Manager',
+      salary_min: 140000,
+      salary_max: 180000,
+      salary_currency: '$',
+      description: 'Evergreen is on a mission to craft sustainable digital experiences. As Lead Product Designer, you will shape our design system, mentor a team of talented designers, and work directly with founders to translate complex business workflows into simple, human-centered interfaces.',
+      requirements: '• 6+ years of UX/UI product design experience for web and mobile.\n• Mastery of Figma, design systems, design tokens, and prototyping.\n• Strong portfolio demonstrating end-to-end design thinking and data-driven decisions.\n• Exceptional communication, presentation, and team mentoring skills.\n• Experience conducting user interviews and usability testing.',
+      benefits: '• Top-tier health insurance & 401(k) matching\n• Hybrid schedule (2 days in-office, 3 days remote)\n• Annual company retreats in eco-resorts\n• Generous wellness and gym reimbursement',
+      status: 'active',
+      created_at: new Date(Date.now() - 4 * 24 * 60 * 60 * 1000).toISOString(),
+      updated_at: new Date(Date.now() - 4 * 24 * 60 * 60 * 1000).toISOString()
+    },
+    {
+      id: 'job-3',
+      title: 'Growth Marketing Manager',
+      company: 'Pinecone Growth Labs',
+      location: 'San Francisco, CA / Remote',
+      job_type: 'Full-time',
+      category: 'Marketing',
+      experience: 'Mid-level',
+      salary_min: 95000,
+      salary_max: 125000,
+      salary_currency: '$',
+      description: 'Join our marketing squad to drive user acquisition, activation, and retention. You will oversee paid ad campaigns, organic content strategies, email nurturing funnels, and conversion rate optimization (CRO) experiments.',
+      requirements: '• 3+ years in growth marketing or performance marketing for B2B/SaaS.\n• Hands-on expertise with Google Ads, Meta Ads, LinkedIn Ads, and SEO tooling.\n• Strong analytical foundation using Google Analytics 4, Mixpanel, and SQL.\n• Creative copywriter with a knack for running A/B landing page tests.',
+      benefits: '• Flexible hours and remote-first setup\n• Performance-based quarterly bonuses\n• Healthcare & 401(k) match\n• $1,500 annual conference allowance',
+      status: 'active',
+      created_at: new Date(Date.now() - 6 * 24 * 60 * 60 * 1000).toISOString(),
+      updated_at: new Date(Date.now() - 6 * 24 * 60 * 60 * 1000).toISOString()
+    },
+    {
+      id: 'job-4',
+      title: 'DevOps & Cloud Infrastructure Engineer',
+      company: 'Canopy Networks',
+      location: 'Austin, TX (Remote Friendly)',
+      job_type: 'Full-time',
+      category: 'Engineering',
+      experience: 'Senior',
+      salary_min: 130000,
+      salary_max: 165000,
+      salary_currency: '$',
+      description: 'Help us maintain 99.99% uptime for critical infrastructure. You will manage our Kubernetes clusters, automate deployment pipelines with GitHub Actions and Terraform, and implement comprehensive monitoring and security guardrails.',
+      requirements: '• 4+ years managing production infrastructure on AWS or GCP.\n• Deep knowledge of Kubernetes, Docker, Helm, and container orchestration.\n• Infrastructure as Code (IaC) mastery using Terraform or Pulumi.\n• Experience with Prometheus, Grafana, Datadog, and Incident Response.',
+      benefits: '• Remote work stipend\n• Full medical, dental, life, and vision coverage\n• On-call compensation bonus\n• Parental leave up to 16 weeks fully paid',
+      status: 'active',
+      created_at: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString(),
+      updated_at: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString()
+    },
+    {
+      id: 'job-5',
+      title: 'Associate Product Manager',
+      company: 'Forest & Oak Software',
+      location: 'Chicago, IL (Hybrid)',
+      job_type: 'Full-time',
+      category: 'Product',
+      experience: 'Entry-level',
+      salary_min: 75000,
+      salary_max: 95000,
+      salary_currency: '$',
+      description: 'Ideal opportunity for an aspiring product manager! You will collaborate directly with senior PMs and engineering leads to define user stories, analyze customer feedback, track sprint velocity, and launch delightful customer-facing features.',
+      requirements: '• 1-2 years of experience in tech, consulting, data analysis, or UX.\n• Curious mindset with strong problem-solving and documentation skills.\n• Familiarity with Agile/Scrum development cycles and Jira/Linear.\n• Strong empathy for end-users and analytical curiosity.',
+      benefits: '• Formal PM mentorship program\n• Full medical benefits\n• Commuter transit benefits\n• 401(k) with 5% company match',
+      status: 'active',
+      created_at: new Date(Date.now() - 8 * 24 * 60 * 60 * 1000).toISOString(),
+      updated_at: new Date(Date.now() - 8 * 24 * 60 * 60 * 1000).toISOString()
+    },
+    {
+      id: 'job-6',
+      title: 'Technical Customer Success Specialist',
+      company: 'Emerald Cloud Systems',
+      location: 'Remote',
+      job_type: 'Part-time',
+      category: 'Customer Support',
+      experience: 'Mid-level',
+      salary_min: 45000,
+      salary_max: 60000,
+      salary_currency: '$',
+      description: 'Provide high-touch technical onboarding and troubleshooting for our mid-market clients. You will assist developers with API integration queries, debug webhook issues, and write customer-facing knowledge base documentation.',
+      requirements: '• 2+ years in technical support, customer engineering, or QA.\n• Basic proficiency with REST APIs, cURL, JSON, and webhooks.\n• Patient, empathetic communicator with outstanding written English.\n• Ability to work 20-25 hours per week on a flexible schedule.',
+      benefits: '• Flexible scheduling\n• Pro-rated health stipend\n• Home office gear kit provided\n• Growth trajectory to full-time support engineer',
+      status: 'active',
+      created_at: new Date(Date.now() - 10 * 24 * 60 * 60 * 1000).toISOString(),
+      updated_at: new Date(Date.now() - 10 * 24 * 60 * 60 * 1000).toISOString()
+    }
+  ];
+
+  const defaultSampleApps = [
+    {
+      id: 'app-1',
+      job_id: 'job-1',
+      job_title: 'Senior Full-Stack Engineer',
+      job_company: 'Verdant Technologies',
+      applicant_name: 'Alex Johnson',
+      applicant_email: 'alex.johnson@example.com',
+      applicant_phone: '+1 (555) 234-5678',
+      portfolio_url: 'https://alexjohnson.dev',
+      experience_years: 6,
+      cover_letter: 'I have spent the past 4 years building high-throughput microservices in Node and React. Verdant Technologies has an incredible mission, and I would love to bring my systems architecture expertise to the team.',
+      resume_name: 'Alex_Johnson_Resume.pdf',
+      resume_data: 'data:application/pdf;base64,JVBERi0xLjUK',
+      status: 'shortlisted',
+      created_at: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000).toISOString()
+    },
+    {
+      id: 'app-2',
+      job_id: 'job-2',
+      job_title: 'Lead Product Designer (UI/UX)',
+      job_company: 'Evergreen Design Studio',
+      applicant_name: 'Elena Rostova',
+      applicant_email: 'elena.design@example.com',
+      applicant_phone: '+1 (555) 345-9876',
+      portfolio_url: 'https://dribbble.com/elenarostova',
+      experience_years: 7,
+      cover_letter: 'I have led design systems for two venture-backed B2B startups. Crafting clean, cohesive visual languages with deep dark green and nature-inspired aesthetics is my specialty.',
+      resume_name: 'Elena_Rostova_Portfolio.pdf',
+      resume_data: 'data:application/pdf;base64,JVBERi0xLjUK',
+      status: 'pending',
+      created_at: new Date(Date.now() - 12 * 60 * 60 * 1000).toISOString()
+    }
+  ];
+
+  function getLocalJobs() {
+    const raw = localStorage.getItem('verdant_demo_jobs');
+    if (!raw) {
+      localStorage.setItem('verdant_demo_jobs', JSON.stringify(defaultSampleJobs));
+      return defaultSampleJobs;
+    }
+    try { return JSON.parse(raw); } catch { return defaultSampleJobs; }
+  }
+
+  function getLocalApps() {
+    const raw = localStorage.getItem('verdant_demo_apps');
+    if (!raw) {
+      localStorage.setItem('verdant_demo_apps', JSON.stringify(defaultSampleApps));
+      return defaultSampleApps;
+    }
+    try { return JSON.parse(raw); } catch { return defaultSampleApps; }
+  }
+
+  function handleClientStorageRequest(endpoint, options = {}) {
+    const method = (options.method || 'GET').toUpperCase();
+    const url = new URL(endpoint, window.location.href);
+    const pathname = url.pathname;
+    let body = {};
+    if (options.body) {
+      try { body = JSON.parse(options.body); } catch {}
+    }
+
+    let jobs = getLocalJobs();
+    let apps = getLocalApps();
+
+    // Stats
+    if (pathname.endsWith('/api/stats')) {
+      const active = jobs.filter(j => j.status === 'active').length;
+      const shortlisted = apps.filter(a => a.status === 'shortlisted').length;
+      return {
+        success: true,
+        stats: {
+          totalJobs: jobs.length,
+          activeJobs: active,
+          totalApplications: apps.length,
+          shortlistedApplications: shortlisted
+        }
+      };
+    }
+
+    // Reset
+    if (pathname.endsWith('/api/reset')) {
+      localStorage.setItem('verdant_demo_jobs', JSON.stringify(defaultSampleJobs));
+      localStorage.setItem('verdant_demo_apps', JSON.stringify(defaultSampleApps));
+      return { success: true, message: 'Reset demo data to initial state.' };
+    }
+
+    // Jobs collection
+    if (pathname.endsWith('/api/jobs')) {
+      if (method === 'GET') {
+        const category = url.searchParams.get('category');
+        const search = url.searchParams.get('search');
+        let filtered = [...jobs];
+        if (category && category !== 'all') {
+          filtered = filtered.filter(j => j.category === category);
+        }
+        if (search) {
+          const t = search.toLowerCase();
+          filtered = filtered.filter(j =>
+            j.title.toLowerCase().includes(t) ||
+            j.company.toLowerCase().includes(t) ||
+            j.location.toLowerCase().includes(t)
+          );
+        }
+        // attach application count
+        filtered = filtered.map(j => ({
+          ...j,
+          application_count: apps.filter(a => a.job_id === j.id).length
+        }));
+        return { success: true, count: filtered.length, jobs: filtered };
+      }
+
+      if (method === 'POST') {
+        const newJob = {
+          id: 'job-' + Date.now(),
+          title: body.title || 'Untitled Role',
+          company: body.company || 'Organization',
+          location: body.location || 'Remote',
+          job_type: body.job_type || 'Full-time',
+          category: body.category || 'Engineering',
+          experience: body.experience || 'Mid-level',
+          salary_min: Number(body.salary_min) || 0,
+          salary_max: Number(body.salary_max) || 0,
+          salary_currency: '$',
+          description: body.description || '',
+          requirements: body.requirements || '',
+          benefits: body.benefits || '',
+          status: body.status || 'active',
+          created_at: new Date().toISOString(),
+          updated_at: new Date().toISOString(),
+          application_count: 0
+        };
+        jobs.unshift(newJob);
+        localStorage.setItem('verdant_demo_jobs', JSON.stringify(jobs));
+        return { success: true, job: newJob, message: 'Position published successfully!' };
+      }
+    }
+
+    // Single job endpoints
+    const singleJobMatch = pathname.match(/\/api\/jobs\/([a-zA-Z0-9-]+)$/);
+    if (singleJobMatch) {
+      const jobId = singleJobMatch[1];
+      if (method === 'PUT') {
+        const idx = jobs.findIndex(j => j.id === jobId);
+        if (idx !== -1) {
+          jobs[idx] = { ...jobs[idx], ...body, updated_at: new Date().toISOString() };
+          localStorage.setItem('verdant_demo_jobs', JSON.stringify(jobs));
+          return { success: true, job: jobs[idx], message: 'Position updated successfully.' };
+        }
+      }
+      if (method === 'DELETE') {
+        jobs = jobs.filter(j => j.id !== jobId);
+        localStorage.setItem('verdant_demo_jobs', JSON.stringify(jobs));
+        return { success: true, message: 'Position deleted successfully.' };
+      }
+    }
+
+    // Apply endpoint
+    const applyMatch = pathname.match(/\/api\/jobs\/([a-zA-Z0-9-]+)\/apply$/);
+    if (applyMatch && method === 'POST') {
+      const jobId = applyMatch[1];
+      const targetJob = jobs.find(j => j.id === jobId);
+      const newApp = {
+        id: 'app-' + Date.now(),
+        job_id: jobId,
+        job_title: targetJob ? targetJob.title : 'Position',
+        job_company: targetJob ? targetJob.company : 'Company',
+        applicant_name: body.applicant_name,
+        applicant_email: body.applicant_email,
+        applicant_phone: body.applicant_phone || '',
+        experience_years: body.experience_years || 0,
+        portfolio_url: body.portfolio_url || '',
+        cover_letter: body.cover_letter || '',
+        resume_name: body.resume_name || 'Resume.pdf',
+        resume_data: body.resume_data || '',
+        status: 'pending',
+        created_at: new Date().toISOString()
+      };
+      apps.unshift(newApp);
+      localStorage.setItem('verdant_demo_apps', JSON.stringify(apps));
+      return { success: true, application: newApp, message: 'Application submitted successfully.' };
+    }
+
+    // Applications collection
+    if (pathname.endsWith('/api/applications')) {
+      const status = url.searchParams.get('status');
+      let filtered = [...apps];
+      if (status && status !== 'all') {
+        filtered = filtered.filter(a => a.status === status);
+      }
+      return { success: true, count: filtered.length, applications: filtered };
+    }
+
+    // Single application update
+    const singleAppMatch = pathname.match(/\/api\/applications\/([a-zA-Z0-9-]+)$/);
+    if (singleAppMatch && (method === 'PATCH' || method === 'PUT')) {
+      const appId = singleAppMatch[1];
+      const idx = apps.findIndex(a => a.id === appId);
+      if (idx !== -1) {
+        apps[idx] = { ...apps[idx], ...body };
+        localStorage.setItem('verdant_demo_apps', JSON.stringify(apps));
+        return { success: true, application: apps[idx], message: 'Status updated.' };
+      }
+    }
+
+    return { success: true };
+  }
+
+  // =========================================================================
+  // API Fetch Utility (With Automatic Static Host Fallback)
   // =========================================================================
   async function fetchJson(endpoint, options = {}) {
+    if (isStaticHost) {
+      return handleClientStorageRequest(endpoint, options);
+    }
+
     try {
       const res = await fetch(endpoint, {
         headers: {
@@ -193,14 +521,23 @@
         },
         ...options
       });
-      const data = await res.json();
       if (!res.ok) {
+        if (res.status === 404) {
+          // Fallback to client storage if server is absent
+          return handleClientStorageRequest(endpoint, options);
+        }
+        const data = await res.json();
         throw new Error(data.error || 'Server responded with status ' + res.status);
       }
-      return data;
+      return await res.json();
     } catch (err) {
-      showToast(err.message, 'error');
-      throw err;
+      // In case of network error on static host
+      try {
+        return handleClientStorageRequest(endpoint, options);
+      } catch {
+        showToast(err.message, 'error');
+        throw err;
+      }
     }
   }
 
